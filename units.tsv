@@ -1,3 +1,3 @@
 sample_name	unit_name	fq1	fq2	sra	adapters	strandedness
-A	control1	/test/data/cont_1.fq.gz	/test/cont_2.fq.gz		
+A	control1	/test/data/cont_1.fq.gz	/test/data/cont_2.fq.gz		
 B	enhancer1	/test/data/enha_1.fq.gz	/test/data/enha_2.fq.gz		
