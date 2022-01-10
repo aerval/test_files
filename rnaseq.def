@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%post
+    /opt/conda/bin/conda create -c bioconda -c conda-forge --name python=3.7.0 snakemake snakemake snakedeploy curl
+    __conda_setup="$('/opt/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    eval "$__conda_setup"
+    unset __conda_setup
+    conda activate snakemake
+    mkdir -p /test/data
+    cd /test
+    curl 
+    snakedeploy deploy-workflow https://github.com/snakemake-workflows/rna-seq-star-deseq2 . --tag v1.2.0
+    cd data
+    touch cont_1.fq.gz cont_2.fq.gz enha_1.fq.gz enha_2.fq.gz
+    cd ../config
+    rm config.yaml units.tsv samples.tsv
+    curl -o samples.tsv https://raw.githubusercontent.com/aerval/test_files/main/samples.tsv
+    curl -o config.yaml https://raw.githubusercontent.com/aerval/test_files/main/config.yaml
+    curl -o units.tsv https://raw.githubusercontent.com/aerval/test_files/main/units.tsv
+    cd ..
+    snakemake --cores all --use-conda --conda-create-envs-only --conda-prefix /opt/conda/envs
+
+%runscript
+    exec /opt/conda/envs/snakemake/bin/"$@"
